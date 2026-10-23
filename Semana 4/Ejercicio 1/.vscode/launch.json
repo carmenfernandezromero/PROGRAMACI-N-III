@@ -1,0 +1,12 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Ejecutar App con Argumentos",
+            "request": "launch",
+            "mainClass": "App",
+            "args": ["8", "12"]
+        }
+    ]
+}
