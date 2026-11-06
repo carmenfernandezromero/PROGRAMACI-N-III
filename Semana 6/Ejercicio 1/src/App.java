@@ -1,6 +1,6 @@
 import java.util.Scanner;
 
-public class AppArrays {
+public class App {
     private static final int CAPACIDAD_MAXIMA = 100;
     private static Coche[] stock = new Coche[CAPACIDAD_MAXIMA];
     private static int numCoches = 0;
