@@ -2,19 +2,18 @@ import java.util.Scanner;
 
 public class App {
     public static void main(String[] args) {
-        
-        Scanner scanner = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
 
-        System.out.print("Introduce el primer número: ");
-        double numero1 = scanner.nextDouble();
+        System.out.print("Introduce el primer número entero: ");
+        int num1 = sc.nextInt();
 
-        System.out.print("Introduce el segundo número: ");
-        double numero2 = scanner.nextDouble();
+        System.out.print("Introduce el segundo número entero: ");
+        int num2 = sc.nextInt();
 
-        double suma = numero1 + numero2;
+        int suma = num1 + num2;
 
-        System.out.println("La suma de " + numero1 + " y " + numero2 + " es: " + suma);
+        System.out.printf("La suma de %d y %d es: %d\n", num1, num2, suma);
 
-        scanner.close();
+        sc.close();
     }
 }
