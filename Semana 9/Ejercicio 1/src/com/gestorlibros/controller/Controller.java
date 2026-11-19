@@ -18,7 +18,24 @@ public class Controller {
     }
 
     public void initApp() {
+        int cargados = m.loadStateOfTheApp();
+        if (cargados == -2) {
+            v.showInfoMessage("No se ha encontrado el fichero libros.bin en el escritorio. Se inicia una colección vacía.");
+        } else if (cargados == -1) {
+            v.showErrorMessage("Error al cargar el fichero binario libros.bin.");
+        } else {
+        v.showInfoMessage("Se han cargado " + cargados + " libros desde libros.bin.");
+
+        }
+ 
         v.startMenu();
+
+        int guardados = m.saveStateOfTheApp();
+        if (guardados == -1) {
+            v.showErrorMessage("Error al guardar el estado en libros.bin.");
+        } else {
+            v.showInfoMessage("Se han guardado " + guardados + " libros en libros.bin.");
+        }
     }
 
     public ArrayList<Libro> getLibros() {

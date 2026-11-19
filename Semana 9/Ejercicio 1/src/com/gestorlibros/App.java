@@ -9,7 +9,6 @@ public class App {
         GestorLibrosModel m = new GestorLibrosModel();
         View v = new View();
         Controller c = new Controller(m, v);
-
         c.initApp();
     }
 }

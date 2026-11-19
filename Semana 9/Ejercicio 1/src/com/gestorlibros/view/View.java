@@ -82,23 +82,76 @@ public class View {
     }
 
     private void exportBooksToXML() {
-        throw new UnsupportedOperationException("Unimplemented method 'exportBooksToXML'");
+        int res = c.exportBooksToXML();
+        if (res == -1) {
+            showErrorMessage("Error al exportar los libros a XML.");
+        } else {
+            showInfoMessage("Se han exportado " + res + " libros a libros.xml en el escritorio.");
+        }
     }
 
     private void exportarBooksJSON() {
-        throw new UnsupportedOperationException("Unimplemented method 'exportarBooksJSON'");
+        int res = c.exportBooksToJSON();
+        if (res == -1) {
+            showErrorMessage("Error al exportar los libros a JSON.");
+        } else {
+            showInfoMessage("Se han exportado " + res + " libros a libros.json en el escritorio.");
+        }
     }
 
     private void exportarBooksCSV() {
-        throw new UnsupportedOperationException("Unimplemented method 'exportarBooksCSV'");
+        int res = c.exportBooksToCSV();
+        if (res == -1) {  
+            showErrorMessage("Error al exportar los libros a CSV.");
+        } else {   
+            showInfoMessage("Se han exportado " + res + " libros a libros.csv en el escritorio.");
+        }
     }
 
     private void editarLibroDelModelo() {
-        throw new UnsupportedOperationException("Unimplemented method 'editarLibroDelModelo'");
+        ArrayList<Libro> books = c.getLibros();
+        if (books.isEmpty()) {
+            System.out.println("No hay libros disponibles para modificar.");
+            return;
+        }
+        mostrarLibrosModelo(true);
+        int index = Esdia.readInt("Seleccione el índice del libro a modificar (0 para cancelar): ", 0, books.size());
+        if (index == 0) {
+            System.out.println("Operación cancelada.");
+            return;
+        }
+
+        Libro libroOriginal = books.get(index - 1);
+        System.out.println("Modificando libro con ISBN: " + libroOriginal.getISBN());
+
+        String titulo = Esdia.readString_ne("Introduzca el nuevo título del libro: ");
+        String autor = Esdia.readString_ne("Introduzca el nuevo autor del libro: ");
+        String editorial = Esdia.readString_ne("Introduzca la nueva editorial del libro: ");
+        int anyoPublicacion = Esdia.readInt("Introduzca el nuevo año de publicación: ");
+        int numPaginas = Esdia.readInt("Introduzca el nuevo número de páginas: ");
+        float precio = Esdia.readFloat("Introduzca el nuevo precio: ");
+
+        Libro libroModificado = new Libro(libroOriginal.getISBN(), titulo, autor, editorial, anyoPublicacion, numPaginas, precio);
+        c.updateLibro(libroModificado);
+        System.out.println("Libro modificado correctamente.");
     }
 
     private void borrarLibroDelModelo() {
-        throw new UnsupportedOperationException("Unimplemented method 'borrarLibroDelModelo'");
+        ArrayList<Libro> books = c.getLibros();
+        if (books.isEmpty()) {
+            System.out.println("No hay libros disponibles para eliminar.");
+            return;
+        }
+        mostrarLibrosModelo(true);
+        int index = Esdia.readInt("Seleccione el índice del libro a eliminar (0 para cancelar): ", 0, books.size());
+        if (index == 0) {
+            System.out.println("Operación cancelada.");
+            return;
+        }
+
+        Libro libroAEliminar = books.get(index - 1);
+        c.removeLibro(libroAEliminar);
+        System.out.println("Libro eliminado correctamente.");
     }
 
     private void anadirLibroAlModelo() {

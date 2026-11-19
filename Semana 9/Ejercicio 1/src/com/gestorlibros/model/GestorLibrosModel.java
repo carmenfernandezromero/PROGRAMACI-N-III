@@ -39,7 +39,10 @@ public class GestorLibrosModel {
     }
 
     public void updateLibro(Libro l) {
-        libros.set(libros.indexOf(l), l);
+        int index = libros.indexOf(l);
+        if (index != -1) {
+             libros.set(index, l);
+            }
     }
 
     public ArrayList<Libro> getLibros() {
@@ -47,7 +50,16 @@ public class GestorLibrosModel {
     }
 
     public int exportBooksToCSV() {
-        throw new UnsupportedOperationException("Unimplemented method 'exportBooksToCSV'");
+        ArrayList<String> lines = new ArrayList<>();
+        for (Libro l : libros) {
+            lines.add(l.asDelimitedString(","));
+        }
+        try {
+            Files.write(pathToCSV, lines, StandardCharsets.UTF_8);
+            return libros.size();
+        } catch (IOException e) { 
+            return -1;
+        }
     }
 
     public int importBooksFromCSV() {
@@ -55,7 +67,14 @@ public class GestorLibrosModel {
     }
 
     public int exportBooksToJSON() {
-        throw new UnsupportedOperationException("Unimplemented method 'exportBooksToJSON'");
+        try {
+            Gson gson = new Gson();
+            String json = gson.toJson(libros);
+            Files.write(pathToJSON, json.getBytes(StandardCharsets.UTF_8));
+            return libros.size();
+        } catch (IOException e) {
+            return -1;
+        }
     }
 
     public int importBooksFromJSON() {
@@ -67,14 +86,34 @@ public class GestorLibrosModel {
     }
 
     public int exportBooksToXML() {
-        throw new UnsupportedOperationException("Unimplemented method 'exportBooksToXML'");
+        try {
+            XmlMapper xmlMapper = new XmlMapper();
+            String xml = xmlMapper.writeValueAsString(libros);
+            Files.write(pathToXML, xml.getBytes(StandardCharsets.UTF_8));
+            return libros.size();
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
     public int saveStateOfTheApp() {
-        throw new UnsupportedOperationException("Unimplemented method 'saveStateOfTheApp'");
+        try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(pathToBinary.toFile()))) {
+            oos.writeObject(libros);
+            return libros.size();
+        } catch (IOException e) {
+            return -1;
+        }
     }
 
     public int loadStateOfTheApp() {
-        throw new UnsupportedOperationException("Unimplemented method 'loadStateOfTheApp'");
+        if (!Files.exists(pathToBinary)) {
+            return -2;
+        }
+        try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(pathToBinary.toFile()))) {
+            libros = (ArrayList<Libro>) ois.readObject();
+            return libros.size();
+        } catch (Exception e) {
+            return -1;
+        }
     }
 }
