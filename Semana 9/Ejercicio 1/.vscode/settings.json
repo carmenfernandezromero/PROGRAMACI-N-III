@@ -1,0 +1,15 @@
+{
+    "java.project.sourcePaths": ["src"],
+    "java.project.outputPath": "bin",
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "c:\\Users\\Usuario\\Downloads\\jackson-dataformat-xml-2.16.0-rc1.jar",
+        "c:\\Users\\Usuario\\Downloads\\stax2-api-4.0.0.jar",
+        "c:\\Users\\Usuario\\Downloads\\jackson-dataformat-xml-2.15.3.jar",
+        "c:\\Users\\Usuario\\Downloads\\jackson-databind-2.15.3.jar",
+        "c:\\Users\\Usuario\\Downloads\\jackson-core-2.15.3.jar",
+        "c:\\Users\\Usuario\\Downloads\\jackson-annotations-2.15.3.jar",
+        "c:\\Users\\Usuario\\Downloads\\gson-2.10.1.jar",
+        "c:\\Users\\Usuario\\Downloads\\biblioteca_progiii.jar"
+    ]
+}
