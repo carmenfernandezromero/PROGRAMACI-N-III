@@ -24,8 +24,7 @@ public class Controller {
         } else if (cargados == -1) {
             v.showErrorMessage("Error al cargar el fichero binario libros.bin.");
         } else {
-        v.showInfoMessage("Se han cargado " + cargados + " libros desde libros.bin.");
-
+            v.showInfoMessage("Se han cargado " + cargados + " libros desde libros.bin.");
         }
  
         v.startMenu();

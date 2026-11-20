@@ -1,21 +1,22 @@
 package com.gestorlibros.model;
 
-import java.nio.file.Path;
-import java.nio.file.Files;
-import java.util.ArrayList;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
-import java.io.FileOutputStream;
-import java.io.ObjectOutputStream;
-import java.io.FileInputStream;
-import java.io.ObjectInputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
-import es.usal.progiii.tools.Rutas;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+
+import es.usal.progiii.tools.Rutas;
 
 public class GestorLibrosModel {
 
@@ -41,8 +42,8 @@ public class GestorLibrosModel {
     public void updateLibro(Libro l) {
         int index = libros.indexOf(l);
         if (index != -1) {
-             libros.set(index, l);
-            }
+            libros.set(index, l);
+        }
     }
 
     public ArrayList<Libro> getLibros() {
@@ -57,13 +58,29 @@ public class GestorLibrosModel {
         try {
             Files.write(pathToCSV, lines, StandardCharsets.UTF_8);
             return libros.size();
-        } catch (IOException e) { 
+        } catch (IOException e) {
             return -1;
         }
     }
 
     public int importBooksFromCSV() {
-        throw new UnsupportedOperationException("Unimplemented method 'importBooksFromCSV'");
+        if (!Files.exists(pathToCSV)) {
+            return -2;
+        }
+        try {
+            List<String> lines = Files.readAllLines(pathToCSV, StandardCharsets.UTF_8);
+            int added = 0;
+            for (String line : lines) {
+                Libro l = Libro.fromDelimitedString(line, ",");
+                if (l != null && !libros.contains(l)) {
+                    libros.add(l);
+                    added++;
+                }
+            }
+            return added;
+        } catch (IOException e) {
+            return -1;
+        }
     }
 
     public int exportBooksToJSON() {
@@ -78,11 +95,53 @@ public class GestorLibrosModel {
     }
 
     public int importBooksFromJSON() {
-        throw new UnsupportedOperationException("Unimplemented method 'importBooksFromJSON'");
+        if (!Files.exists(pathToJSON)) {
+            return -2;
+        }
+        try {
+            Gson gson = new Gson();
+            String json = new String(Files.readAllBytes(pathToJSON), StandardCharsets.UTF_8);
+            Type listType = new TypeToken<ArrayList<Libro>>() {}.getType();
+            ArrayList<Libro> importedBooks = gson.fromJson(json, listType);
+            if (importedBooks == null) {
+                return 0;
+            }
+            int added = 0;
+            for (Libro l : importedBooks) {
+                if (l != null && !libros.contains(l)) {
+                    libros.add(l);
+                    added++;
+                }
+            }
+            return added;
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
     public int importBooksFromXML() {
-        throw new UnsupportedOperationException("Unimplemented method 'importBooksFromXML'");
+        if (!Files.exists(pathToXML)) {
+            return -2;
+        }
+        try {
+            XmlMapper xmlMapper = new XmlMapper();
+            String xml = new String(Files.readAllBytes(pathToXML), StandardCharsets.UTF_8);
+            List<Libro> importedBooks = xmlMapper.readValue(xml,
+                    xmlMapper.getTypeFactory().constructCollectionType(List.class, Libro.class));
+            if (importedBooks == null) {
+                return 0;
+            }
+            int added = 0;
+            for (Libro l : importedBooks) {
+                if (l != null && !libros.contains(l)) {
+                    libros.add(l);
+                    added++;
+                }
+            }
+            return added;
+        } catch (Exception e) {
+            return -1;
+        }
     }
 
     public int exportBooksToXML() {
@@ -105,6 +164,7 @@ public class GestorLibrosModel {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public int loadStateOfTheApp() {
         if (!Files.exists(pathToBinary)) {
             return -2;

@@ -70,15 +70,36 @@ public class View {
     }
 
     private void importBooksFromCSV() {
-        throw new UnsupportedOperationException("Unimplemented method 'importBooksFromCSV'");
+        int res = c.importBooksFromCSV();
+        if (res == -2) {
+            showErrorMessage("No se ha encontrado el fichero libros.csv en el escritorio.");
+        } else if (res == -1) {
+            showErrorMessage("Error al importar los libros desde CSV.");
+        } else {
+            showInfoMessage("Se han importado " + res + " libros nuevos desde libros.csv (duplicados omitidos).");
+        }
     }
 
     private void importarBooksXML() {
-        throw new UnsupportedOperationException("Unimplemented method 'importarBooksXML'");
+        int res = c.importBooksFromXML();
+        if (res == -2) {
+            showErrorMessage("No se ha encontrado el fichero libros.xml en el escritorio.");
+        } else if (res == -1) {
+            showErrorMessage("Error al importar los libros desde XML.");
+        } else {
+            showInfoMessage("Se han importado " + res + " libros nuevos desde libros.xml (duplicados omitidos).");
+        }
     }
 
     private void importarBooksJSON() {
-        throw new UnsupportedOperationException("Unimplemented method 'importarBooksJSON'");
+        int res = c.importBooksFromJSON();
+        if (res == -2) {
+            showErrorMessage("No se ha encontrado el fichero libros.json en el escritorio.");
+        } else if (res == -1) {
+            showErrorMessage("Error al importar los libros desde JSON.");
+        } else {
+            showInfoMessage("Se han importado " + res + " libros nuevos desde libros.json (duplicados omitidos).");
+        }
     }
 
     private void exportBooksToXML() {
@@ -101,9 +122,9 @@ public class View {
 
     private void exportarBooksCSV() {
         int res = c.exportBooksToCSV();
-        if (res == -1) {  
+        if (res == -1) {
             showErrorMessage("Error al exportar los libros a CSV.");
-        } else {   
+        } else {
             showInfoMessage("Se han exportado " + res + " libros a libros.csv en el escritorio.");
         }
     }

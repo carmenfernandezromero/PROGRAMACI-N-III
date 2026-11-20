@@ -34,8 +34,10 @@ public class Libro implements Serializable {
             if (parts.length != 7) {
                 return null;
             }
-            return new Libro(parts[0], parts[1], parts[2], parts[3],
-                    Integer.parseInt(parts[4]), Integer.parseInt(parts[5]), Float.parseFloat(parts[6]));
+            return new Libro(parts[0].trim(),parts[1].trim(), parts[2].trim(), parts[3].trim(),
+                Integer.parseInt(parts[4].trim()),
+                Integer.parseInt(parts[5].trim()),
+                Float.parseFloat(parts[6].trim().replace(",", ".")));
         } catch (IllegalArgumentException e) {
             e.printStackTrace(System.err);
             return null;
